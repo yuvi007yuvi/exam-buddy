@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Exam Portal</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <!-- Animated background elements -->
+    <div class="fixed top-0 left-0 w-full h-full overflow-hidden z-0">
+        <div class="absolute top-10 left-10 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+        <div class="absolute top-0 right-10 w-72 h-72 bg-violet-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div class="absolute bottom-10 left-20 w-72 h-72 bg-teal-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+    </div>
+    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="max-w-md w-full space-y-8 p-10 glass-card z-10 transform transition-all duration-500">
+            <div class="text-center">
+                <img src="logo.png" alt="Exam Buddy Logo" class="mx-auto h-28 w-auto mb-4">
+                <h2 class="mt-6 text-center text-4xl font-extrabold neon-text-teal">
+                    Online Exam Portal
+                </h2>
+                <p class="mt-2 text-center text-sm text-gray-400 flex items-center justify-center">
+                    <i class="fas fa-user-circle mr-2"></i>Sign in to your account
+                </p>
+                <button id="themeToggleBtn" class="absolute top-4 right-4 text-gray-300 hover:text-white transition-colors duration-300 text-lg focus:outline-none">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+            <form class="mt-8 space-y-6" id="authForm">
+                <input type="hidden" name="remember" value="true">
+                <div class="space-y-4">
+                    <div>
+                        <label for="email-address" class="sr-only">Email address</label>
+                        <input id="email-address" name="email" type="email" autocomplete="email" required
+                               class="appearance-none relative block w-full px-4 py-3 border-0 bg-opacity-20 bg-gray-800 placeholder-gray-400 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent sm:text-sm"
+                               placeholder="Email address">
+                    </div>
+                    <div>
+                        <label for="password" class="sr-only">Password</label>
+                        <input id="password" name="password" type="password" autocomplete="current-password" required
+                               class="appearance-none relative block w-full px-4 py-3 border-0 bg-opacity-20 bg-gray-800 placeholder-gray-400 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent sm:text-sm"
+                               placeholder="Password">
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <button type="submit" id="loginBtn"
+                            class="btn-primary w-full flex justify-center py-3 px-4 text-sm font-medium rounded-lg">
+                        Sign in
+                    </button>
+                    <button type="button" id="googleSignInBtn" class="btn-secondary w-full flex justify-center py-3 px-4 text-sm font-medium rounded-lg">
+                        Sign In with Google
+                    </button>
+                </div>
+                <div class="text-center">
+                    <a href="#" id="registerLink" class="font-medium neon-text hover:text-opacity-80 transition-all duration-300">
+                        Don't have an account? Register
+                    </a>
+                </div>
+            </form>
+            <p id="authMessage" class="text-center neon-text-violet mt-4"></p>
+        </div>
+    </div>
+
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.8.0/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.8.0/firebase-auth.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.8.0/firebase-firestore.js"></script>
+    <script type="module" src="firebase-config.js"></script>
+    <script type="module" src="script.js"></script>
+</body>
+</html>
