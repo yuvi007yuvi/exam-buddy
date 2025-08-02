@@ -2,48 +2,61 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Users: each user can read and write only their own document
+    // --- Users ---
     match /users/{userId} {
-      allow read, write: if isAuthenticated() && request.auth.uid == userId;
-    }
+      // Users can read their own profile
+      allow read: if request.auth != null && request.auth.uid == userId;
 
-    // Exams: all authenticated users can read; only admins can write
-    match /exams/{examId} {
-      allow read: if isAuthenticated();
-      allow create, update, delete: if isAdmin();
-    }
+      // Admins can read all user profiles
+      allow read: if request.auth != null &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
 
-    // Exam Results:
-    // - Create allowed by any authenticated user
-    // - Read: ✅ Public read access
-    // - Update/Delete: Only owner or admin
-    match /examResults/{resultId} {
-      allow create: if isAuthenticated();
-
-      // ✅ Public read access (no auth required)
-      allow read: if true;
-
-      allow update, delete: if isAuthenticated() && (
-        isAdmin() || isOwner()
-      );
-    }
-
-    // --- Helper Functions ---
-    function isAuthenticated() {
-      return request.auth != null;
-    }
-
-    function isAdmin() {
-      return isAuthenticated() &&
+      // Only admins can create, update, or delete user documents
+      allow create, update, delete: if request.auth != null &&
         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
     }
 
-    function isSpecialUser() {
-      return request.auth.uid == 'f5cikPlwYCSPNbdGm9c4C6IOS3t2';
+    // --- Exams ---
+    match /exams/{examId} {
+      // All logged-in users can read exam info
+      allow read: if request.auth != null;
+
+      // Admins can manage exams
+      allow create, update, delete: if request.auth != null &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
     }
 
-    function isOwner() {
-      return resource.data.userId == request.auth.uid;
+    // --- Submissions ---
+    match /submissions/{submissionId} {
+      // Allow students to submit answers
+      allow create: if request.auth != null;
+
+      // Only admins can read submissions
+      allow read: if request.auth != null &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+
+      // Block updates and deletes
+      allow update, delete: if false;
+    }
+
+    // --- Exam Results ---
+    match /examResults/{resultId} {
+      // Allow students to submit their result
+      allow create: if request.auth != null;
+
+      // Allow admins or owner to read result
+      allow read: if request.auth != null &&
+        (
+          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
+          resource.data.userId == request.auth.uid
+        );
+
+      // Only admins or owner can update/delete
+      allow update, delete: if request.auth != null &&
+        (
+          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
+          resource.data.userId == request.auth.uid
+        );
     }
   }
 }
