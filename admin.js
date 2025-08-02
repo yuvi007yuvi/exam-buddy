@@ -443,17 +443,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 const table = document.createElement('table');
-                table.className = 'min-w-full bg-gray-800 rounded-lg overflow-hidden shadow-lg divide-y divide-gray-700';
+                table.className = 'min-w-full bg-gray-800 rounded-lg overflow-hidden shadow-lg';
                 table.innerHTML = `
-                    <thead class="bg-gray-700">
+                    <thead>
                         <tr>
-                            <th class="py-3 px-6 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Title</th>
-                            <th class="py-3 px-6 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Description</th>
-                            <th class="py-3 px-6 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Time Limit</th>
-                            <th class="py-3 px-6 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
+                            <th class="py-3 px-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Title</th>
+                            <th class="py-3 px-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Description</th>
+                            <th class="py-3 px-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Time Limit</th>
+                            <th class="py-3 px-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
                         </tr>
                     </thead>
-                    <tbody id="examsTableBody" class="divide-y divide-gray-700"></tbody>
+                    <tbody id="examsTableBody"></tbody>
                 `;
                 examsList.appendChild(table);
 
@@ -465,16 +465,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     const row = document.createElement('tr');
                     row.className = 'border-b border-gray-700 hover:bg-gray-700 transition-colors duration-200';
                     row.innerHTML = `
-                        <td class="py-4 px-6 text-sm font-medium text-gray-200">${exam.title}</td>
-                        <td class="py-4 px-6 text-sm text-gray-300">${exam.description}</td>
-                        <td class="py-4 px-6 text-sm text-gray-300">${exam.timeLimit} mins</td>
-                        <td class="py-4 px-6 text-sm font-medium flex space-x-2">
-                            <button class="text-red-500 hover:text-red-700 delete-exam-btn" data-id="${examId}">
-                                <i class="fas fa-trash-alt"></i> Delete
-                            </button>
-                            <button class="text-blue-500 hover:text-blue-700 view-exam-btn" data-id="${examId}">
-                                <i class="fas fa-eye"></i> View
-                            </button>
+                        <td class="py-3 px-4 text-sm font-medium text-gray-200">${exam.title}</td>
+                        <td class="py-3 px-4 text-sm text-gray-300">${exam.description}</td>
+                        <td class="py-3 px-4 text-sm text-gray-300">${exam.timeLimit} mins</td>
+                        <td class="py-3 px-4 text-sm">
+                            <button class="btn-secondary py-1 px-3 text-xs rounded view-exam-btn" data-id="${examId}"><i class="fas fa-eye mr-1"></i>View</button>
+                            <button class="btn-danger py-1 px-3 text-xs rounded delete-exam-btn ml-2" data-id="${examId}"><i class="fas fa-trash-alt mr-1"></i>Delete</button>
                         </td>
                     `;
                     examsTableBody.appendChild(row);

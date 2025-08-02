@@ -91,6 +91,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Update summary information
             totalSubmissionsElement.textContent = submissions.length;
             averageScoreElement.textContent = submissions.length > 0 ? (totalScore / submissions.length).toFixed(2) : '0';
+
+            // Render score distribution chart
+            renderScoreDistributionChart(submissions, examData.questions.length);
             
             // Clear and populate results table
             resultsTableBody.innerHTML = '';
@@ -212,6 +215,105 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Error signing out: ' + error.message);
         }
     });
+
+    let scoreChart = null; // To store the chart instance
+
+    function renderScoreDistributionChart(submissions, totalQuestions) {
+        const ctx = document.getElementById('scoreDistributionChart').getContext('2d');
+
+        // Calculate score ranges (e.g., 0-20%, 21-40%, etc.)
+        const scoreRanges = {
+            '0-20%': 0,
+            '21-40%': 0,
+            '41-60%': 0,
+            '61-80%': 0,
+            '81-100%': 0
+        };
+
+        submissions.forEach(submission => {
+            const percentage = (submission.score / totalQuestions) * 100;
+            if (percentage >= 0 && percentage <= 20) {
+                scoreRanges['0-20%']++;
+            } else if (percentage > 20 && percentage <= 40) {
+                scoreRanges['21-40%']++;
+            } else if (percentage > 40 && percentage <= 60) {
+                scoreRanges['41-60%']++;
+            } else if (percentage > 60 && percentage <= 80) {
+                scoreRanges['61-80%']++;
+            } else if (percentage > 80 && percentage <= 100) {
+                scoreRanges['81-100%']++;
+            }
+        });
+
+        const data = {
+            labels: Object.keys(scoreRanges),
+            datasets: [{
+                label: 'Number of Students',
+                data: Object.values(scoreRanges),
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(153, 102, 255, 0.6)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        const options = {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        color: '#ccc' // Light gray for y-axis labels
+                    },
+                    grid: {
+                        color: 'rgba(204, 204, 204, 0.1)' // Light gray for y-axis grid lines
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: '#ccc' // Light gray for x-axis labels
+                    },
+                    grid: {
+                        color: 'rgba(204, 204, 204, 0.1)' // Light gray for x-axis grid lines
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#ccc' // Light gray for legend labels
+                    }
+                },
+                title: {
+                    display: true,
+                    text: 'Score Distribution',
+                    color: '#eee' // White for chart title
+                }
+            }
+        };
+
+        if (scoreChart) {
+            scoreChart.destroy(); // Destroy existing chart before creating a new one
+        }
+
+        scoreChart = new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: options
+        });
+    }
 
     async function loadExamResults(examId) {
         try {
