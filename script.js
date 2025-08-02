@@ -61,7 +61,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Register link event listener is now handled in the updateFormMode function
+    registerLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        isRegistering = !isRegistering;
+        updateFormMode();
+    });
+
+    // Initial form mode setup
+    updateFormMode();
 
     function updateFormMode() {
         const nameInputContainer = document.getElementById('nameInputContainer');
