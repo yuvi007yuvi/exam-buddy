@@ -39,69 +39,72 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const authForm = document.getElementById('authForm');
-    const emailInput = document.getElementById('email-address');
-    const passwordInput = document.getElementById('password');
-    const loginBtn = document.getElementById('loginBtn');
-    const authMessage = document.getElementById('authMessage');
-    const registerLink = document.getElementById('registerLink');
-
-    let isRegistering = false;
-
-    // Check auth state
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            // User is signed in, redirect to dashboard based on role
-            checkUserRole(user);
-        } else {
-            // User is signed out
-            console.log('User is signed out');
-            // Redirect to home.html if user is signed out and on the root (index.html) page
-            // Allow guests to view index.html
-            // No redirection needed if user is signed out and on index.html
-        }
-    });
-
-    registerLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        isRegistering = !isRegistering;
-        updateFormMode();
-    });
-
-    // Initial form mode setup
-    updateFormMode();
-
-    function updateFormMode() {
-        const nameInputContainer = document.getElementById('nameInputContainer');
-        
-        if (isRegistering) {
-            // If name input doesn't exist, create it
-            if (!nameInputContainer) {
-                const container = document.createElement('div');
-                container.id = 'nameInputContainer';
-                container.innerHTML = `
-                    <label for="name" class="sr-only">Full Name</label>
-                    <input id="name" name="name" type="text" required
-                           class="appearance-none relative block w-full px-4 py-3 border-0 bg-opacity-20 bg-gray-800 placeholder-gray-400 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent sm:text-sm"
-                           placeholder="Full Name">
-                `;
-                // Insert before password field
-                emailInput.parentNode.parentNode.insertBefore(container, emailInput.parentNode.nextSibling);
-            }
-            if (loginBtn) loginBtn.textContent = 'Register';
-            if (registerLink) registerLink.textContent = 'Already have an account? Login';
-            if (authMessage) authMessage.textContent = '';
-        } else {
-            // Remove name input if it exists
-            if (nameInputContainer) {
-                nameInputContainer.remove();
-            }
-            if (loginBtn) loginBtn.textContent = 'Sign in';
-            if (registerLink) registerLink.textContent = 'Don\'t have an account? Register';
-            if (authMessage) authMessage.textContent = '';
-        }
-    }
 
     if (authForm) {
+        const emailInput = document.getElementById('email-address');
+        const passwordInput = document.getElementById('password');
+        const loginBtn = document.getElementById('loginBtn');
+        const authMessage = document.getElementById('authMessage');
+        const registerLink = document.getElementById('registerLink');
+
+        let isRegistering = false;
+
+        // Check auth state
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in, redirect to dashboard based on role
+                checkUserRole(user);
+            } else {
+                // User is signed out
+                console.log('User is signed out');
+                // Redirect to home.html if user is signed out and on the root (index.html) page
+                // Allow guests to view index.html
+                // No redirection needed if user is signed out and on index.html
+            }
+        });
+
+        if (registerLink) {
+            registerLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                isRegistering = !isRegistering;
+                updateFormMode();
+            });
+        }
+
+        // Initial form mode setup
+        updateFormMode();
+
+        function updateFormMode() {
+            const nameInputContainer = document.getElementById('nameInputContainer');
+            
+            if (isRegistering) {
+                // If name input doesn't exist, create it
+                if (!nameInputContainer) {
+                    const container = document.createElement('div');
+                    container.id = 'nameInputContainer';
+                    container.innerHTML = `
+                        <label for="name" class="sr-only">Full Name</label>
+                        <input id="name" name="name" type="text" required
+                               class="appearance-none relative block w-full px-4 py-3 border-0 bg-opacity-20 bg-gray-800 placeholder-gray-400 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent sm:text-sm"
+                               placeholder="Full Name">
+                    `;
+                    // Insert before password field
+                    emailInput.parentNode.parentNode.insertBefore(container, emailInput.parentNode.nextSibling);
+                }
+                if (loginBtn) loginBtn.textContent = 'Register';
+                if (registerLink) registerLink.textContent = 'Already have an account? Login';
+                if (authMessage) authMessage.textContent = '';
+            } else {
+                // Remove name input if it exists
+                if (nameInputContainer) {
+                    nameInputContainer.remove();
+                }
+                if (loginBtn) loginBtn.textContent = 'Sign in';
+                if (registerLink) registerLink.textContent = 'Don\'t have an account? Register';
+                if (authMessage) authMessage.textContent = '';
+            }
+        }
+
         authForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = emailInput.value;
@@ -146,61 +149,61 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
-    }
 
-    // Handle Google Sign-In
-    const googleSignInBtn = document.getElementById('googleSignInBtn');
-    if (googleSignInBtn) {
-        googleSignInBtn.addEventListener('click', async () => {
-            const provider = new GoogleAuthProvider();
-            try {
-                const result = await signInWithPopup(auth, provider);
-                const user = result.user;
+        // Handle Google Sign-In
+        const googleSignInBtn = document.getElementById('googleSignInBtn');
+        if (googleSignInBtn) {
+            googleSignInBtn.addEventListener('click', async () => {
+                const provider = new GoogleAuthProvider();
+                try {
+                    const result = await signInWithPopup(auth, provider);
+                    const user = result.user;
 
-                // Check if user exists in Firestore, if not, create a new entry with default role 'student'
-                const userDocRef = doc(db, "users", user.uid);
-                const userDocSnap = await getDoc(userDocRef);
+                    // Check if user exists in Firestore, if not, create a new entry with default role 'student'
+                    const userDocRef = doc(db, "users", user.uid);
+                    const userDocSnap = await getDoc(userDocRef);
 
-                if (!userDocSnap.exists()) {
-                    // Get display name from Google account or use email username as fallback
-                    const displayName = user.displayName || user.email.split('@')[0];
-                    
-                    await setDoc(userDocRef, {
-                        email: user.email,
-                        name: displayName,
-                        role: 'student' // Default role for Google sign-ins
-                    });
+                    if (!userDocSnap.exists()) {
+                        // Get display name from Google account or use email username as fallback
+                        const displayName = user.displayName || user.email.split('@')[0];
+                        
+                        await setDoc(userDocRef, {
+                            email: user.email,
+                            name: displayName,
+                            role: 'student' // Default role for Google sign-ins
+                        });
+                    }
+
+                        // Redirect based on role
+                        checkUserRole(user);
+                } catch (error) {
+                    console.error('Error during Google Sign-In:', error);
+                    authMessage.textContent = `Google Sign-In failed: ${error.message}`;
                 }
-
-                    // Redirect based on role
-                    checkUserRole(user);
-            } catch (error) {
-                console.error('Error during Google Sign-In:', error);
-                authMessage.textContent = `Google Sign-In failed: ${error.message}`;
-            }
-        });
-    }
-
-    async function checkUserRole(user) {
-        const userDocRef = doc(db, "users", user.uid);
-        const userDocSnap = await getDoc(userDocRef);
-
-        if (userDocSnap.exists()) {
-            const userData = userDocSnap.data();
-            if (userData.role === 'admin') {
-                window.location.href = 'admin.html'; // Redirect to admin dashboard
-            } else {
-                window.location.href = 'student.html'; // Redirect to student dashboard
-            }
-        } else {
-            // If user document doesn't exist (e.g., new user registered without role set immediately)
-            // This case should ideally be handled during registration, but as a fallback:
-            console.warn('User document not found for:', user.uid, 'Assigning default student role.');
-            await setDoc(doc(db, "users", user.uid), {
-                email: user.email,
-                role: 'student'
             });
-            window.location.href = 'student.html';
+        }
+
+        async function checkUserRole(user) {
+            const userDocRef = doc(db, "users", user.uid);
+            const userDocSnap = await getDoc(userDocRef);
+
+            if (userDocSnap.exists()) {
+                const userData = userDocSnap.data();
+                if (userData.role === 'admin') {
+                    window.location.href = 'admin.html'; // Redirect to admin dashboard
+                } else {
+                    window.location.href = 'student.html'; // Redirect to student dashboard
+                }
+            } else {
+                // If user document doesn't exist (e.g., new user registered without role set immediately)
+                // This case should ideally be handled during registration, but as a fallback:
+                console.warn('User document not found for:', user.uid, 'Assigning default student role.');
+                await setDoc(doc(db, "users", user.uid), {
+                    email: user.email,
+                    role: 'student'
+                });
+                window.location.href = 'student.html';
+            }
         }
     }
 });

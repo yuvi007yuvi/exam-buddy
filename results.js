@@ -48,32 +48,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to load exam data and display results
     async function loadExamResults(examId) {
-        if (!examId) {
-            // Hide results sections if no exam is selected
-            document.querySelector('.mb-6').style.display = 'none';
-            document.querySelector('.overflow-x-auto').style.display = 'none';
-            return;
-        }
-        
         // Show results sections
         document.querySelector('.mb-6').style.display = 'block';
         document.querySelector('.overflow-x-auto').style.display = 'block';
-        
+
         try {
-            // Get exam details
-            const examRef = doc(db, "exams", examId);
-            const examSnap = await getDoc(examRef);
-            
-            if (!examSnap.exists()) {
-                alert('Exam not found.');
-                return;
+            let examData = null;
+            if (examId) {
+                // Get exam details if a specific examId is provided
+                const examRef = doc(db, "exams", examId);
+                const examSnap = await getDoc(examRef);
+
+                if (!examSnap.exists()) {
+                    alert('Exam not found.');
+                    return;
+                }
+                examData = examSnap.data();
+                examTitleElement.textContent = examData.title;
+            } else {
+                examTitleElement.textContent = 'All Exam Results'; // Set title for all results
             }
-            
-            const examData = examSnap.data();
-            examTitleElement.textContent = examData.title;
-            
+
             // Get exam submissions
-            const submissionsQuery = query(collection(db, "submissions"), where("examId", "==", examId));
+            let submissionsQuery;
+            if (examId) {
+                submissionsQuery = query(collection(db, "submissions"), where("examId", "==", examId));
+            } else {
+                submissionsQuery = query(collection(db, "submissions"), orderBy("submittedAt", "desc")); // Order by submission time
+            }
             const submissionsSnapshot = await getDocs(submissionsQuery);
             
             // Process submissions data
@@ -98,13 +100,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             
+            const examTitles = {};
+            // Fetch all exam titles if not a specific exam
+            if (!examId) {
+                const examsSnapshot = await getDocs(collection(db, "exams"));
+                examsSnapshot.forEach(doc => {
+                    examTitles[doc.id] = doc.data().title;
+                });
+            }
+
             submissions.forEach((submission) => {
                 const row = document.createElement('tr');
                 row.className = 'border-b border-gray-700 hover:bg-gray-700 transition-colors duration-200';
+                const examTitle = examId ? examData.title : (examTitles[submission.examId] || 'Unknown Exam');
                 row.innerHTML = `
+                    <td class="py-3 px-6 text-sm font-medium text-gray-200">${examTitle}</td>
                     <td class="py-3 px-6 text-sm font-medium text-gray-200">${submission.studentName || submission.studentEmail || 'Unknown'}</td>
                     <td class="py-3 px-6 text-sm text-gray-300">${submission.score || 0}</td>
-                    <td class="py-3 px-6 text-sm text-gray-300">${examData.questions ? examData.questions.length : 0}</td>
+                    <td class="py-3 px-6 text-sm text-gray-300">${submission.totalQuestions || 'N/A'}</td>
                     <td class="py-3 px-6 text-sm text-gray-300">${new Date(submission.submittedAt.seconds * 1000).toLocaleString()}</td>
                 `;
                 resultsTableBody.appendChild(row);

@@ -5,55 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Online Exam Portal</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    animation: {
-                        blob: "blob 7s infinite",
-                    },
-                    keyframes: {
-                        blob: {
-                            "0%": {
-                                transform: "translate(0px, 0px) scale(1)",
-                            },
-                            "33%": {
-                                transform: "translate(30px, -50px) scale(1.1)",
-                            },
-                            "66%": {
-                                transform: "translate(-20px, 20px) scale(0.9)",
-                            },
-                            "100%": {
-                                transform: "translate(0px, 0px) scale(1)",
-                            },
-                        },
-                    },
-                },
-            },
-        };
-    </script>
+
 </head>
-<body class="min-h-screen font-sans leading-normal tracking-normal">
-    <!-- Animated background elements -->
-    <div class="fixed top-0 left-0 w-full h-full overflow-hidden z-0">
-        <div class="absolute top-10 left-10 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-        <div class="absolute top-0 right-10 w-72 h-72 bg-violet-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div class="absolute bottom-10 left-20 w-72 h-72 bg-teal-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
-    </div>
+<body>
+
     <nav class="w-full py-4 px-6 flex justify-between items-center z-20 relative">
         <img src="logo.png" alt="Exam Buddy Logo" class="h-20 w-20 mr-4">
-        <h1 class="text-2xl font-bold neon-text-violet">Admin Dashboard</h1>
+        <h1 class="text-2xl font-bold text-violet-500">Admin Dashboard</h1>
         <div class="flex items-center space-x-4">
             <span id="navUserNameDisplay" class="text-gray-300 text-sm font-medium mr-2"><i class="fas fa-user-circle mr-1"></i></span>
             <button id="themeToggleBtn" class="text-gray-300 hover:text-white transition-colors duration-300 text-lg focus:outline-none mr-4">
                 <i class="fas fa-moon"></i>
             </button>
-            <button id="viewResultsBtn" class="neon-text hover:text-opacity-80 transition-all duration-300 bg-transparent border-0 cursor-pointer">View Results</button>
+            <button id="viewResultsBtn" class="text-gray-300 hover:text-white transition-all duration-300 bg-transparent border-0 cursor-pointer">View Results</button>
             <button id="logoutBtn" class="btn-danger py-2 px-4 rounded-lg text-sm font-medium">
                 <i class="fas fa-sign-out-alt mr-1"></i>Logout
             </button>
@@ -61,11 +26,11 @@
     </nav>
 
     <div class="container mx-auto mt-8 p-8 glass-card relative z-10">
-        <h2 class="text-3xl font-bold neon-text-teal mb-4"><i class="fas fa-user-shield mr-2"></i>Welcome, Admin! <span id="userNameDisplay" class="text-xl font-semibold neon-text-violet"></span></h2>
+        <h2 class="text-3xl font-bold text-teal-500 mb-4"><i class="fas fa-user-shield mr-2"></i>Welcome, Admin! <span id="userNameDisplay" class="text-xl font-semibold text-violet-500"></span></h2>
         <p class="text-gray-400 mb-6">Manage exams, create questions, and view results.</p>
 
         <div class="glass-card p-6 mb-8">
-            <h3 class="text-2xl font-bold neon-text-teal mb-4"><i class="fas fa-file-excel mr-2"></i>Upload Questions via Excel</h3>
+            <h3 class="text-2xl font-bold text-teal-500 mb-4"><i class="fas fa-file-excel mr-2"></i>Upload Questions via Excel</h3>
             <div class="mt-6">
                 <input type="file" id="excelUpload" accept=".xlsx, .xls" class="block w-full text-sm text-gray-500
                        file:mr-4 file:py-2 file:px-4
@@ -82,22 +47,22 @@
         </div>
 
         <div class="glass-card p-6 mb-8">
-            <h3 class="text-2xl font-bold neon-text mb-4"><i class="fas fa-plus-circle mr-2"></i>Create New Exam</h3>
+            <h3 class="text-2xl font-bold text-gray-300 mb-4"><i class="fas fa-plus-circle mr-2"></i>Create New Exam</h3>
             <form id="createExamForm" class="space-y-4">
                 <div>
                     <label for="examTitle" class="block text-sm font-medium text-gray-400">Exam Title</label>
                     <input type="text" id="examTitle" name="examTitle" required
-                           class="mt-1 block w-full px-4 py-3 bg-opacity-20 bg-gray-800 border-0 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent sm:text-sm text-white">
+                           class="mt-1 block w-full px-4 py-3 bg-opacity-20 bg-gray-800 border-0 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent sm:text-sm text-white">
                 </div>
                 <div>
                     <label for="examDescription" class="block text-sm font-medium text-gray-400">Description</label>
                     <textarea id="examDescription" name="examDescription" rows="3" required
-                              class="mt-1 block w-full px-4 py-3 bg-opacity-20 bg-gray-800 border-0 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent sm:text-sm text-white"></textarea>
+                              class="mt-1 block w-full px-4 py-3 bg-opacity-20 bg-gray-800 border-0 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent sm:text-sm text-white"></textarea>
                 </div>
                 <div>
                     <label for="timeLimit" class="block text-sm font-medium text-gray-400">Time Limit (minutes)</label>
                     <input type="number" id="timeLimit" name="timeLimit" required min="1"
-                           class="mt-1 block w-full px-4 py-3 bg-opacity-20 bg-gray-800 border-0 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent sm:text-sm text-white">
+                           class="mt-1 block w-full px-4 py-3 bg-opacity-20 bg-gray-800 border-0 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent sm:text-sm text-white">
                 </div>
                 <div id="questionsContainer" class="space-y-4">
                     <!-- Questions will be added here dynamically -->
@@ -112,12 +77,12 @@
         </div>
 
         <div class="glass-card p-6 mb-8">
-            <h3 class="text-2xl font-bold neon-text-teal mb-4"><i class="fas fa-clipboard-list mr-2"></i>Upload MCQ Questions</h3>
+            <h3 class="text-2xl font-bold text-teal-500 mb-4"><i class="fas fa-clipboard-list mr-2"></i>Upload MCQ Questions</h3>
             <form id="uploadMcqForm" class="space-y-4">
                 <div>
                     <label for="mcqExamId" class="block text-sm font-medium text-gray-400">Select Exam</label>
                     <select id="mcqExamId" name="mcqExamId" required
-                            class="mt-1 block w-full px-4 py-3 bg-opacity-20 bg-gray-800 border-0 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent sm:text-sm text-white">
+                            class="mt-1 block w-full px-4 py-3 bg-opacity-20 bg-gray-800 border-0 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent sm:text-sm text-white">
                         <option value="">-- Select an existing exam --</option>
                         <!-- Options will be loaded dynamically -->
                     </select>
@@ -137,7 +102,7 @@
         </div>
 
         <div class="glass-card p-6 mb-8">
-            <h3 class="text-2xl font-bold neon-text-violet mb-4"><i class="fas fa-list-alt mr-2"></i>Existing Exams</h3>
+            <h3 class="text-2xl font-bold text-violet-500 mb-4"><i class="fas fa-list-alt mr-2"></i>Existing Exams</h3>
             <div id="examsList" class="space-y-4">
                 <!-- Existing exams will be loaded here -->
             </div>
@@ -154,14 +119,14 @@
     <div id="resultsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
         <div class="glass-card p-6 max-w-md w-full">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold neon-text-teal">Select Exam to View Results</h3>
+                <h3 class="text-xl font-bold text-teal-500">Select Exam to View Results</h3>
                 <button id="closeResultsModalBtn" class="text-gray-400 hover:text-white">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             <div class="mb-4">
                 <label for="resultsExamSelect" class="block text-sm font-medium text-gray-400 mb-2">Select Exam</label>
-                <select id="resultsExamSelect" class="w-full px-4 py-3 bg-opacity-20 bg-gray-800 border-0 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent text-white">
+                <select id="resultsExamSelect" class="w-full px-4 py-3 bg-opacity-20 bg-gray-800 border-0 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white">
                     <option value="">-- Select an exam --</option>
                 </select>
             </div>

@@ -1,18 +1,49 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // Users: each user can read and write only their own document
     match /users/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read, write: if isAuthenticated() && request.auth.uid == userId;
     }
+
+    // Exams: all authenticated users can read; only admins can write
     match /exams/{examId} {
-      allow read: if request.auth != null;
-      allow create, update, delete: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+      allow read: if isAuthenticated();
+      allow create, update, delete: if isAdmin();
     }
+
+    // Exam Results:
+    // - Create allowed by any authenticated user
+    // - Read: ✅ Public read access
+    // - Update/Delete: Only owner or admin
     match /examResults/{resultId} {
-      allow create: if request.auth != null;
-      allow read, update, delete: if request.auth != null && 
-        (request.auth.uid == resource.data.userId || 
-         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin');
+      allow create: if isAuthenticated();
+
+      // ✅ Public read access (no auth required)
+      allow read: if true;
+
+      allow update, delete: if isAuthenticated() && (
+        isAdmin() || isOwner()
+      );
+    }
+
+    // --- Helper Functions ---
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    function isSpecialUser() {
+      return request.auth.uid == 'f5cikPlwYCSPNbdGm9c4C6IOS3t2';
+    }
+
+    function isOwner() {
+      return resource.data.userId == request.auth.uid;
     }
   }
 }

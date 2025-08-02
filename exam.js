@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let examData = null;
     let questions = [];
     let warningCount = 0; // To track how many times the user has switched tabs
+    let examSubmitted = false; // Flag to indicate if the exam has been submitted
 
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
@@ -58,22 +59,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Tab switching warning
     document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-            if (warningCount < 2) {
-                warningCount++;
+        if (document.hidden && !examSubmitted) {
+            warningCount++;
+            if (warningCount <= 2) {
                 alert(`Warning! You switched tabs. This is attempt #${warningCount}. Excessive switching may lead to disqualification.`);
+            } else if (warningCount === 3) {
+                alert('You have switched tabs too many times. Your exam will be submitted automatically.');
+                submitExamBtn.click(); // Auto-submit the exam
             }
         }
     });
 
-    window.addEventListener('blur', () => {
-        if (document.visibilityState === 'visible') { // Only warn if the window is still visible but not focused
-            if (warningCount < 2) {
-                warningCount++;
-                alert(`Warning! You left the exam window. This is attempt #${warningCount}. Excessive switching may lead to disqualification.`);
-            }
-        }
-    });
+
 
     try {
         // Fetch exam details
@@ -175,8 +172,26 @@ document.addEventListener('DOMContentLoaded', async () => {
                 userAnswers: userAnswers,
                 submittedAt: new Date()
             });
-            alert(`Exam submitted! Your score: ${score}/${questions.length}`);
-            window.location.href = 'student.html'; // Redirect to student dashboard after submission
+            examSubmitted = true; // Set flag to true on successful submission
+            // Display results on the exam page
+            const resultDisplay = document.createElement('div');
+            resultDisplay.className = 'bg-green-800 bg-opacity-50 p-6 rounded-lg shadow-md mt-8 text-center';
+            resultDisplay.innerHTML = `
+                <h2 class="text-2xl font-bold text-white mb-4">Exam Submitted!</h2>
+                <p class="text-xl text-white">Your Score: ${score} / ${questions.length}</p>
+                <button id="backToDashboardBtn" class="mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Back to Dashboard</button>
+            `;
+            questionsContainer.innerHTML = ''; // Clear questions
+            questionsContainer.appendChild(resultDisplay);
+            submitExamBtn.style.display = 'none'; // Hide submit button
+
+            document.getElementById('backToDashboardBtn').addEventListener('click', () => {
+                window.location.href = 'student.html';
+            });
+
+            // Disable all radio buttons after submission
+            const radioButtons = document.querySelectorAll('input[type="radio"]');
+            radioButtons.forEach(radio => radio.disabled = true);
         } catch (error) {
             console.error('Error submitting exam:', error);
             alert('Error submitting exam: ' + error.message);
