@@ -11,22 +11,23 @@
   --color-text-primary: #f8fafc;
   --color-text-secondary: #cbd5e1;
   --color-text-muted: #64748b;
-  
+
   /* Accent colors */
   --color-neon-blue: #00c8ff;
   --color-neon-teal: #0aefff;
   --color-neon-violet: #a855f7;
   --color-neon-pink: #ec4899;
-  
+
   /* Gradients */
   --gradient-blue-violet: linear-gradient(135deg, var(--color-neon-blue), var(--color-neon-violet));
   --gradient-teal-blue: linear-gradient(135deg, var(--color-neon-teal), var(--color-neon-blue));
   --gradient-violet-pink: linear-gradient(135deg, var(--color-neon-violet), var(--color-neon-pink));
-  
+
   /* Glassmorphism */
   --glass-bg: rgba(15, 23, 42, 0.6);
   --glass-border: rgba(255, 255, 255, 0.1);
   --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --color-text-dark: #000000; /* Define for dark theme */
 }
 
 [data-theme='light'] {
@@ -49,6 +50,7 @@
   --glass-bg: rgba(255, 255, 255, 0.7);
   --glass-border: rgba(0, 0, 0, 0.1);
   --glass-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.1);
+  --color-text-dark: #ffffff; /* Define for light theme */
 }
 
 [data-theme='light'] .neon-text,
@@ -74,7 +76,8 @@
 
 [data-theme='light'] .navbar-links a,
 [data-theme='light'] .navbar-links button {
-  color: var(--color-text-primary); /* Ensure default text color is primary for light theme */
+  color: var(--color-text-primary);
+  /* Ensure default text color is primary for light theme */
 }
 
 /* Base styles */
@@ -118,6 +121,48 @@ body {
   word-wrap: break-word;
   overflow-wrap: break-word;
   max-width: 100%;
+}
+
+/* Style for select elements within glass cards */
+.glass-card select {
+  background-color: var(--glass-bg);
+  color: var(--color-text-primary);
+  border: 1px solid var(--glass-border);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  appearance: none; /* Remove default browser styling */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23f8fafc" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.7em top 50%;
+  background-size: 1.5em auto;
+  transition: all 0.3s ease;
+}
+
+[data-theme='light'] .glass-card select {
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%231a202c" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+}
+
+.glass-card select:focus {
+  outline: none;
+  border-color: var(--color-neon-blue);
+  box-shadow: 0 0 0 3px rgba(0, 200, 255, 0.3);
+}
+
+.glass-card select option {
+    background-color: var(--color-bg-darker) !important;
+    color: var(--color-text-primary) !important;
+}
+
+.glass-card select:focus option:checked {
+    background-color: var(--color-neon-blue);
+    color: var(--color-text-dark);
+}
+
+[data-theme='light'] .glass-card select option {
+  background-color: var(--color-bg-darker) !important;
+  color: var(--color-text-primary) !important;
 }
 
 /* Top navigation bar */
@@ -166,12 +211,14 @@ nav {
   }
 
   [data-theme='light'] .navbar-links.active {
-    background: #ffffff; /* Explicitly white background for light theme active menu */
+    background: #ffffff;
+    /* Explicitly white background for light theme active menu */
   }
 
   [data-theme='light'] .navbar-links.active a,
   [data-theme='light'] .navbar-links.active button {
-    color: #f6f6f6; /* Explicitly black text for light theme active menu */
+    color: #f6f6f6;
+    /* Explicitly black text for light theme active menu */
   }
 
   .navbar-links a,
@@ -209,11 +256,11 @@ nav {
 
   .navbar-links .flex.items-center.space-x-4 {
     flex-direction: column;
-    space-x: 0;
+    gap: 0;
     width: 100%;
   }
 
-  .navbar-links .flex.items-center.space-x-4 > * {
+  .navbar-links .flex.items-center.space-x-4>* {
     width: 100%;
     text-align: center;
   }
@@ -317,23 +364,26 @@ td {
 .scrolling-content {
   white-space: nowrap;
   display: flex;
-  animation: scroll-left 20s linear infinite;
-  width: max-content; /* Ensure content takes up necessary width */
+  animation: scroll-left 40s linear infinite; /* Increased duration for slower, smoother scroll */
+  width: max-content;
+  /* Ensure content takes up necessary width */
 }
 
 @keyframes scroll-left {
-    0% {
-        transform: translateX(0%);
-    }
-    100% {
-        transform: translateX(-100%); /* Adjusted to scroll the full width of duplicated content */
-    }
+  0% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(-100%);
+    /* Adjusted to scroll the full width of duplicated content */
+  }
 }
 
 /* Neon Text */
 .neon-text {
   color: var(--color-text-primary);
-  text-shadow: 
+  text-shadow:
     0 0 7px var(--color-neon-blue),
     0 0 10px var(--color-neon-blue),
     0 0 21px var(--color-neon-blue),
@@ -347,7 +397,7 @@ td {
 
 .neon-text-violet {
   color: var(--color-text-primary);
-  text-shadow: 
+  text-shadow:
     0 0 7px var(--color-neon-violet),
     0 0 10px var(--color-neon-violet),
     0 0 21px var(--color-neon-violet),
@@ -361,7 +411,7 @@ td {
 
 .neon-text-teal {
   color: var(--color-text-primary);
-  text-shadow: 
+  text-shadow:
     0 0 7px var(--color-neon-teal),
     0 0 10px var(--color-neon-teal),
     0 0 21px var(--color-neon-teal),
@@ -426,7 +476,9 @@ td {
 }
 
 /* Form elements */
-input, select, textarea {
+input,
+select,
+textarea {
   background: rgba(15, 23, 42, 0.8);
   border: 1px solid var(--glass-border);
   color: var(--color-text-primary);
@@ -435,7 +487,9 @@ input, select, textarea {
   transition: all 0.3s ease;
 }
 
-input:focus, select:focus, textarea:focus {
+input:focus,
+select:focus,
+textarea:focus {
   outline: none;
   border-color: var(--color-neon-blue);
   box-shadow: 0 0 0 3px rgba(0, 200, 255, 0.2);
@@ -469,9 +523,11 @@ label {
   0% {
     box-shadow: 0 0 0 0 rgba(10, 239, 255, 0.4);
   }
+
   70% {
     box-shadow: 0 0 0 10px rgba(10, 239, 255, 0);
   }
+
   100% {
     box-shadow: 0 0 0 0 rgba(10, 239, 255, 0);
   }
@@ -507,16 +563,16 @@ label {
     padding-top: 60px;
     transition: all 0.3s ease;
   }
-  
+
   .side-menu.open {
     width: 250px;
   }
-  
+
   .main-content {
     margin-left: 0;
     transition: all 0.3s ease;
   }
-  
+
   .main-content.shifted {
     margin-left: 250px;
   }

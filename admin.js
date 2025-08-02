@@ -77,6 +77,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const addMcqQuestionBtn = document.getElementById('addMcqQuestionBtn');
         const mcqQuestionsInput = document.getElementById('mcqQuestionsInput');
         let mcqQuestionCounter = 0;
+        
+        // Results modal elements
+        const viewResultsBtn = document.getElementById('viewResultsBtn');
+        const resultsModal = document.getElementById('resultsModal');
+        const closeResultsModalBtn = document.getElementById('closeResultsModalBtn');
+        const resultsExamSelect = document.getElementById('resultsExamSelect');
+        const viewSelectedExamResultsBtn = document.getElementById('viewSelectedExamResultsBtn');
 
         // Function to add a new MCQ question block
         function addMcqQuestionBlock() {
@@ -362,6 +369,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
         loadExams();
         populateMcqExamSelect();
+        
+        // Results modal functionality
+        viewResultsBtn.addEventListener('click', () => {
+            populateResultsExamSelect();
+            resultsModal.classList.remove('hidden');
+        });
+        
+        closeResultsModalBtn.addEventListener('click', () => {
+            resultsModal.classList.add('hidden');
+        });
+        
+        viewSelectedExamResultsBtn.addEventListener('click', () => {
+            const selectedExamId = resultsExamSelect.value;
+            if (!selectedExamId) {
+                alert('Please select an exam to view results.');
+                return;
+            }
+            window.location.href = `results.html?examId=${selectedExamId}`;
+        });
 
         async function populateMcqExamSelect() {
             mcqExamIdSelect.innerHTML = '<option value="">-- Select an existing exam --</option>';
@@ -379,6 +405,29 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
+        async function populateResultsExamSelect() {
+            resultsExamSelect.innerHTML = '<option value="">-- Select an exam --</option>';
+            try {
+                const q = query(collection(db, "exams"), orderBy("createdAt", "desc"));
+                const querySnapshot = await getDocs(q);
+                
+                if (querySnapshot.empty) {
+                    resultsExamSelect.innerHTML += '<option disabled>No exams available</option>';
+                    return;
+                }
+                
+                querySnapshot.forEach((doc) => {
+                    const option = document.createElement('option');
+                    option.value = doc.id;
+                    option.textContent = doc.data().title;
+                    resultsExamSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error populating results exam select:', error);
+                alert('Error loading exams: ' + error.message);
+            }
+        }
+        
         async function loadExams() {
             const examsList = document.getElementById('examsList');
             examsList.innerHTML = ''; // Clear current list
@@ -429,9 +478,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Add event listeners for view and delete buttons
                 document.querySelectorAll('.view-exam-btn').forEach(button => {
                     button.addEventListener('click', (e) => {
-                        const examId = e.target.dataset.id;
-                        // Implement view exam logic (e.g., redirect to exam details page)
-                        alert('View Exam: ' + examId);
+                        const examId = e.currentTarget.dataset.id;
+                        // Redirect to exam page with the exam ID
+                        window.location.href = `exam.html?examId=${examId}`;
                     });
                 });
 

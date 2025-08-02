@@ -1,5 +1,5 @@
 import { auth, db } from './firebase-config.js';
-import { doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.8.0/firebase-firestore.js";
+import { doc, getDoc, collection, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/9.8.0/firebase-firestore.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.8.0/firebase-auth.js";
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -35,11 +35,139 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const urlParams = new URLSearchParams(window.location.search);
     const examId = urlParams.get('examId');
+    
+    // Initialize variables for exam selection
+    let exams = [];
+    let selectedExamId = examId;
+    
+    // Show exam selector if no examId is provided
+    const examSelectorContainer = document.getElementById('examSelectorContainer');
+    if (!examId && examSelectorContainer) {
+        examSelectorContainer.style.display = 'block';
+    }
 
-    if (!examId) {
-        alert('Exam ID not found.');
-        window.location.href = 'admin.html';
-        return;
+    // Function to load exam data and display results
+    async function loadExamResults(examId) {
+        if (!examId) {
+            // Hide results sections if no exam is selected
+            document.querySelector('.mb-6').style.display = 'none';
+            document.querySelector('.overflow-x-auto').style.display = 'none';
+            return;
+        }
+        
+        // Show results sections
+        document.querySelector('.mb-6').style.display = 'block';
+        document.querySelector('.overflow-x-auto').style.display = 'block';
+        
+        try {
+            // Get exam details
+            const examRef = doc(db, "exams", examId);
+            const examSnap = await getDoc(examRef);
+            
+            if (!examSnap.exists()) {
+                alert('Exam not found.');
+                return;
+            }
+            
+            const examData = examSnap.data();
+            examTitleElement.textContent = examData.title;
+            
+            // Get exam submissions
+            const submissionsQuery = query(collection(db, "submissions"), where("examId", "==", examId));
+            const submissionsSnapshot = await getDocs(submissionsQuery);
+            
+            // Process submissions data
+            const submissions = [];
+            let totalScore = 0;
+            
+            submissionsSnapshot.forEach((doc) => {
+                const submission = doc.data();
+                submissions.push(submission);
+                totalScore += submission.score || 0;
+            });
+            
+            // Update summary information
+            totalSubmissionsElement.textContent = submissions.length;
+            averageScoreElement.textContent = submissions.length > 0 ? (totalScore / submissions.length).toFixed(2) : '0';
+            
+            // Clear and populate results table
+            resultsTableBody.innerHTML = '';
+            
+            if (submissions.length === 0) {
+                resultsTableBody.innerHTML = '<tr><td colspan="4" class="py-4 text-center text-gray-400">No submissions yet.</td></tr>';
+                return;
+            }
+            
+            submissions.forEach((submission) => {
+                const row = document.createElement('tr');
+                row.className = 'border-b border-gray-700 hover:bg-gray-700 transition-colors duration-200';
+                row.innerHTML = `
+                    <td class="py-3 px-6 text-sm font-medium text-gray-200">${submission.studentName || submission.studentEmail || 'Unknown'}</td>
+                    <td class="py-3 px-6 text-sm text-gray-300">${submission.score || 0}</td>
+                    <td class="py-3 px-6 text-sm text-gray-300">${examData.questions ? examData.questions.length : 0}</td>
+                    <td class="py-3 px-6 text-sm text-gray-300">${new Date(submission.submittedAt.seconds * 1000).toLocaleString()}</td>
+                `;
+                resultsTableBody.appendChild(row);
+            });
+            
+        } catch (error) {
+            console.error('Error loading exam results:', error);
+            alert('Error loading exam results: ' + error.message);
+        }
+    }
+    
+    // Function to load available exams
+    async function loadExams() {
+        try {
+            const q = query(collection(db, "exams"), orderBy("createdAt", "desc"));
+            const querySnapshot = await getDocs(q);
+            
+            exams = [];
+            const examSelector = document.getElementById('examSelector');
+            
+            if (examSelector) {
+                examSelector.innerHTML = '<option value="">-- Select an exam --</option>';
+                
+                querySnapshot.forEach((doc) => {
+                    const exam = {
+                        id: doc.id,
+                        ...doc.data()
+                    };
+                    exams.push(exam);
+                    
+                    const option = document.createElement('option');
+                    option.value = exam.id;
+                    option.textContent = exam.title;
+                    if (exam.id === selectedExamId) {
+                        option.selected = true;
+                    }
+                    examSelector.appendChild(option);
+                });
+                
+                // Add event listener to the selector
+                examSelector.addEventListener('change', (e) => {
+                    selectedExamId = e.target.value;
+                    // Update URL without reloading the page
+                    const url = new URL(window.location);
+                    if (selectedExamId) {
+                        url.searchParams.set('examId', selectedExamId);
+                    } else {
+                        url.searchParams.delete('examId');
+                    }
+                    window.history.pushState({}, '', url);
+                    
+                    // Load results for the selected exam
+                    loadExamResults(selectedExamId);
+                });
+            }
+            
+            // Load results for the initially selected exam
+            loadExamResults(selectedExamId);
+            
+        } catch (error) {
+            console.error('Error loading exams:', error);
+            alert('Error loading exams: ' + error.message);
+        }
     }
 
     onAuthStateChanged(auth, async (user) => {
@@ -48,8 +176,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const userDocSnap = await getDoc(userDocRef);
 
             if (userDocSnap.exists() && userDocSnap.data().role === 'admin') {
+                // Load available exams
+                loadExams();
                 console.log('Admin logged in to results page:', user.email);
-                loadExamResults(examId);
+                // loadExamResults is now called from loadExams function
             } else {
                 alert('Access Denied: You are not an administrator.');
                 window.location.href = 'home.html';

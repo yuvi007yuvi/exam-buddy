@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,16 +20,16 @@
                     },
                     keyframes: {
                         blob: {
-                            "0%" : {
+                            "0%": {
                                 transform: "translate(0px, 0px) scale(1)",
                             },
-                            "33%" : {
+                            "33%": {
                                 transform: "translate(30px, -50px) scale(1.1)",
                             },
-                            "66%" : {
+                            "66%": {
                                 transform: "translate(-20px, 20px) scale(0.9)",
                             },
-                            "100%" : {
+                            "100%": {
                                 transform: "translate(0px, 0px) scale(1)",
                             },
                         },
@@ -38,21 +39,31 @@
         };
     </script>
 </head>
+
 <body class="min-h-screen font-sans leading-normal tracking-normal flex flex-col">
     <!-- Animated background elements -->
     <div class="fixed top-0 left-0 w-full h-full overflow-hidden z-0">
-        <div class="absolute top-10 left-10 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-        <div class="absolute top-0 right-10 w-72 h-72 bg-violet-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div class="absolute bottom-10 left-20 w-72 h-72 bg-teal-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+        <div
+            class="absolute top-10 left-10 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob">
+        </div>
+        <div
+            class="absolute top-0 right-10 w-72 h-72 bg-violet-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000">
+        </div>
+        <div
+            class="absolute bottom-10 left-20 w-72 h-72 bg-teal-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000">
+        </div>
     </div>
 
     <nav class="w-full py-4 px-6 flex justify-between items-center z-20 relative">
         <img src="logo.png" alt="Exam Buddy Logo" class="h-20 w-auto">
         <div class="hidden md:flex items-center space-x-8" id="navbar-links">
             <a href="#hero" class="text-gray-300 hover:text-white transition-colors duration-300 text-lg">Home</a>
-            <a href="#features-section" class="text-gray-300 hover:text-white transition-colors duration-300 text-lg">Features</a>
-            <a href="#testimonials-section" class="text-gray-300 hover:text-white transition-colors duration-300 text-lg">Testimonials</a>
-            <a href="#about-us-section" class="text-gray-300 hover:text-white transition-colors duration-300 text-lg">About Us</a>
+            <a href="#features-section"
+                class="text-gray-300 hover:text-white transition-colors duration-300 text-lg">Features</a>
+            <a href="#testimonials-section"
+                class="text-gray-300 hover:text-white transition-colors duration-300 text-lg">Testimonials</a>
+            <a href="#about-us-section"
+                class="text-gray-300 hover:text-white transition-colors duration-300 text-lg">About Us</a>
         </div>
         <div class="md:hidden flex items-center">
             <button id="mobile-menu-button" class="text-gray-300 hover:text-white focus:outline-none">
@@ -60,7 +71,8 @@
             </button>
         </div>
         <div class="flex items-center space-x-4">
-            <button id="themeToggleBtn" class="text-gray-300 hover:text-white transition-colors duration-300 text-lg focus:outline-none mr-4">
+            <button id="themeToggleBtn"
+                class="text-gray-300 hover:text-white transition-colors duration-300 text-lg focus:outline-none mr-4">
                 <i class="fas fa-moon"></i>
             </button>
             <a href="home.html" class="btn-primary py-2 px-4 rounded-lg text-sm font-medium">Login</a>
@@ -77,8 +89,12 @@
                 or an admin managing assessments, Exam Buddy provides a seamless and intuitive experience.
             </p>
             <div class="flex justify-center space-x-4">
-                <a href="home.html" class="btn-primary py-3 px-8 rounded-full text-lg font-medium shadow-lg transform hover:scale-105 transition-all duration-300">Get Started as Student</a>
-                <a href="home.html" class="btn-secondary py-3 px-8 rounded-full text-lg font-medium shadow-lg transform hover:scale-105 transition-all duration-300">Manage as Admin</a>
+                <a href="home.html"
+                    class="btn-primary py-3 px-8 rounded-full text-lg font-medium shadow-lg transform hover:scale-105 transition-all duration-300">Get
+                    Started as Student</a>
+                <a href="home.html"
+                    class="btn-secondary py-3 px-8 rounded-full text-lg font-medium shadow-lg transform hover:scale-105 transition-all duration-300">Manage
+                    as Admin</a>
             </div>
         </section>
 
@@ -125,36 +141,44 @@
             <div class="scrolling-testimonials">
                 <div class="scrolling-content flex space-x-8">
                     <div class="glass-card p-8 flex-none">
-                        <p class="text-gray-300 italic mb-4">"Exam Buddy has transformed how I prepare for tests. The interface is clean, and tracking my progress is incredibly helpful!"</p>
+                        <p class="text-gray-300 italic mb-4">"Exam Buddy has transformed how I prepare for tests. The
+                            interface is clean, and tracking my progress is incredibly helpful!"</p>
                         <p class="text-white font-semibold">- A Happy Student</p>
                     </div>
                     <div class="glass-card p-8 flex-none">
-                        <p class="text-gray-300 italic mb-4">"Managing exams used to be a headache, but Exam Buddy makes it so easy. The Excel upload feature is a lifesaver!"</p>
+                        <p class="text-gray-300 italic mb-4">"Managing exams used to be a headache, but Exam Buddy makes
+                            it so easy. The Excel upload feature is a lifesaver!"</p>
                         <p class="text-white font-semibold">- An Admin User</p>
                     </div>
                     <div class="glass-card p-8 flex-none">
-                        <p class="text-gray-300 italic mb-4">"The analytics provided by Exam Buddy are a game-changer. I can pinpoint exactly where I need to improve!"</p>
+                        <p class="text-gray-300 italic mb-4">"The analytics provided by Exam Buddy are a game-changer. I
+                            can pinpoint exactly where I need to improve!"</p>
                         <p class="text-white font-semibold">- A Focused Learner</p>
                     </div>
                     <div class="glass-card p-8 flex-none">
-                        <p class="text-gray-300 italic mb-4">"Exam Buddy's role-based access has simplified our administrative tasks immensely. Highly recommend for institutions!"</p>
+                        <p class="text-gray-300 italic mb-4">"Exam Buddy's role-based access has simplified our
+                            administrative tasks immensely. Highly recommend for institutions!"</p>
                         <p class="text-white font-semibold">- An Educational Administrator</p>
                     </div>
                     <!-- Duplicate testimonials for seamless loop -->
                     <div class="glass-card p-8 flex-none">
-                        <p class="text-gray-300 italic mb-4">"Exam Buddy has transformed how I prepare for tests. The interface is clean, and tracking my progress is incredibly helpful!"</p>
+                        <p class="text-gray-300 italic mb-4">"Exam Buddy has transformed how I prepare for tests. The
+                            interface is clean, and tracking my progress is incredibly helpful!"</p>
                         <p class="text-white font-semibold">- A Happy Student</p>
                     </div>
                     <div class="glass-card p-8 flex-none">
-                        <p class="text-gray-300 italic mb-4">"Managing exams used to be a headache, but Exam Buddy makes it so easy. The Excel upload feature is a lifesaver!"</p>
+                        <p class="text-gray-300 italic mb-4">"Managing exams used to be a headache, but Exam Buddy makes
+                            it so easy. The Excel upload feature is a lifesaver!"</p>
                         <p class="text-white font-semibold">- An Admin User</p>
                     </div>
                     <div class="glass-card p-8 flex-none">
-                        <p class="text-gray-300 italic mb-4">"The analytics provided by Exam Buddy are a game-changer. I can pinpoint exactly where I need to improve!"</p>
+                        <p class="text-gray-300 italic mb-4">"The analytics provided by Exam Buddy are a game-changer. I
+                            can pinpoint exactly where I need to improve!"</p>
                         <p class="text-white font-semibold">- A Focused Learner</p>
                     </div>
                     <div class="glass-card p-8 flex-none">
-                        <p class="text-gray-300 italic mb-4">"Exam Buddy's role-based access has simplified our administrative tasks immensely. Highly recommend for institutions!"</p>
+                        <p class="text-gray-300 italic mb-4">"Exam Buddy's role-based access has simplified our
+                            administrative tasks immensely. Highly recommend for institutions!"</p>
                         <p class="text-white font-semibold">- An Educational Administrator</p>
                     </div>
                 </div>
@@ -168,17 +192,29 @@
                 <h3 class="text-4xl font-bold neon-text-blue">About Us</h3>
             </div>
             <p class="text-xl text-gray-300 mb-6 leading-relaxed">
-                Exam Buddy was founded with a clear vision: to simplify and enhance the online examination experience for everyone. We believe in providing a robust, secure, and user-friendly platform that empowers students to achieve their academic goals and enables educators to manage assessments with unparalleled ease.
+                Exam Buddy was founded with a clear vision: to simplify and enhance the online examination experience
+                for everyone. We believe in providing a robust, secure, and user-friendly platform that empowers
+                students to achieve their academic goals and enables educators to manage assessments with unparalleled
+                ease.
             </p>
             <p class="text-xl text-gray-300 leading-relaxed">
-                Our team is dedicated to continuous innovation, ensuring Exam Buddy remains at the forefront of educational technology. We are committed to supporting learning and assessment through reliable and intuitive solutions.
+                Our team is dedicated to continuous innovation, ensuring Exam Buddy remains at the forefront of
+                educational technology. We are committed to supporting learning and assessment through reliable and
+                intuitive solutions.
             </p>
             <h4 class="text-2xl font-bold neon-text-teal mt-6 mb-4">Meet the Founder</h4>
             <p class="text-xl text-gray-300 leading-relaxed">
-                Exam Buddy was founded by <strong>Yuvraj Singh Tomar</strong>, a 24-year-old from a small town with a profound vision: to revolutionize exam preparation. Having personally navigated the complexities of traditional learning, Yuvraj channeled his experiences into creating Exam Buddy, a platform designed to make diligent practice and hard work not just accessible, but truly transformative for students worldwide.
+                Exam Buddy was founded by <strong>Yuvraj Singh Tomar</strong>, a 24-year-old from a small town with a
+                profound vision: to revolutionize exam preparation. Having personally navigated the complexities of
+                traditional learning, Yuvraj channeled his experiences into creating Exam Buddy, a platform designed to
+                make diligent practice and hard work not just accessible, but truly transformative for students
+                worldwide.
             </p>
             <p class="text-xl text-gray-300 leading-relaxed mt-4">
-                "My unwavering belief is that with the right guidance and unwavering dedication, every student can conquer their academic challenges. Exam Buddy is more than just a platform; it's my heartfelt commitment to empowering students, turning their tireless efforts into resounding success stories and illuminating their path to a brighter future." 
+                "My unwavering belief is that with the right guidance and unwavering dedication, every student can
+                conquer their academic challenges. Exam Buddy is more than just a platform; it's my heartfelt commitment
+                to empowering students, turning their tireless efforts into resounding success stories and illuminating
+                their path to a brighter future."
             </p>
         </section>
 
@@ -187,8 +223,11 @@
             <h3 class="text-4xl font-bold neon-text-teal mb-8">Ready to Get Started?</h3>
             <p class="text-xl text-gray-300 mb-10">Join Exam Buddy today and streamline your exam experience!</p>
             <div class="flex justify-center space-x-4">
-                <a href="home.html" class="btn-primary py-3 px-8 rounded-full text-lg font-medium shadow-lg transform hover:scale-105 transition-all duration-300">Login</a>
-                <a href="home.html" class="btn-secondary py-3 px-8 rounded-full text-lg font-medium shadow-lg transform hover:scale-105 transition-all duration-300">Sign Up</a>
+                <a href="home.html"
+                    class="btn-primary py-3 px-8 rounded-full text-lg font-medium shadow-lg transform hover:scale-105 transition-all duration-300">Login</a>
+                <a href="home.html"
+                    class="btn-secondary py-3 px-8 rounded-full text-lg font-medium shadow-lg transform hover:scale-105 transition-all duration-300">Sign
+                    Up</a>
             </div>
         </section>
     </main>
@@ -199,7 +238,7 @@
 
     <script src="./script.js" type="module"></script>
     <script>
-        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+        document.getElementById('mobile-menu-button').addEventListener('click', function () {
             var navbarLinks = document.getElementById('navbar-links');
             if (navbarLinks.classList.contains('hidden')) {
                 navbarLinks.classList.remove('hidden');
@@ -211,4 +250,5 @@
         });
     </script>
 </body>
+
 </html>
