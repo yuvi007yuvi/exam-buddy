@@ -126,8 +126,9 @@ document.addEventListener('DOMContentLoaded', () => {
             mcqQuestionsInput.appendChild(questionDiv);
         }
 
-        // Initial add of one MCQ question block
-        addMcqQuestionBlock();
+        // Initial add of two MCQ question blocks
+        mcqQuestionCounter = 0; // Reset counter before adding blocks
+        addMcqQuestionBlock(); // This will be Question 1
 
         addQuestionBtn.addEventListener('click', () => {
             questionCount++;
@@ -357,7 +358,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     uploadMcqForm.reset();
                     mcqQuestionsInput.innerHTML = '';
                     mcqQuestionCounter = 0;
-                    addMcqQuestionBlock(); // Add initial empty block
+                    addMcqQuestionBlock(); // Add first question block
                 } else {
                     alert('Selected exam not found.');
                 }

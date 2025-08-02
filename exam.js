@@ -1,5 +1,6 @@
 import { auth, db } from './firebase-config.js';
 import { doc, getDoc, collection, query, where, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/9.8.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.8.0/firebase-auth.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
     const themeToggleBtn = document.getElementById('themeToggleBtn');
@@ -39,9 +40,40 @@ document.addEventListener('DOMContentLoaded', async () => {
     const examDescriptionElement = document.getElementById('examDescription');
     const questionsContainer = document.getElementById('questionsContainer');
     const submitExamBtn = document.getElementById('submitExamBtn');
+    const studentNameElement = document.getElementById('studentName');
 
     let examData = null;
     let questions = [];
+    let warningCount = 0; // To track how many times the user has switched tabs
+
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            studentNameElement.textContent = `Student: ${user.displayName || user.email}`;
+        } else {
+            // User is signed out
+            window.location.href = 'index.html'; // Redirect to login
+        }
+    });
+
+    // Tab switching warning
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            if (warningCount < 2) {
+                warningCount++;
+                alert(`Warning! You switched tabs. This is attempt #${warningCount}. Excessive switching may lead to disqualification.`);
+            }
+        }
+    });
+
+    window.addEventListener('blur', () => {
+        if (document.visibilityState === 'visible') { // Only warn if the window is still visible but not focused
+            if (warningCount < 2) {
+                warningCount++;
+                alert(`Warning! You left the exam window. This is attempt #${warningCount}. Excessive switching may lead to disqualification.`);
+            }
+        }
+    });
 
     try {
         // Fetch exam details

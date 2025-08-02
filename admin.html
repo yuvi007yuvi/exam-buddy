@@ -46,7 +46,7 @@
         <div class="absolute bottom-10 left-20 w-72 h-72 bg-teal-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
     </div>
     <nav class="w-full py-4 px-6 flex justify-between items-center z-20 relative">
-        <img src="logo.png" alt="Exam Buddy Logo" class="h-12 w-auto mr-4">
+        <img src="logo.png" alt="Exam Buddy Logo" class="h-20 w-20 mr-4">
         <h1 class="text-2xl font-bold neon-text-violet">Admin Dashboard</h1>
         <div class="flex items-center space-x-4">
             <span id="navUserNameDisplay" class="text-gray-300 text-sm font-medium mr-2"><i class="fas fa-user-circle mr-1"></i></span>
@@ -123,39 +123,7 @@
                     </select>
                 </div>
                 <div id="mcqQuestionsInput" class="space-y-4">
-                    <div class="mcq-question-block glass-card p-4 mb-4">
-                        <h4 class="text-lg font-semibold mb-2">Question 1</h4>
-                        <div>
-                            <label for="mcqQuestionText1" class="block text-sm font-medium text-gray-400">Question Text</label>
-                            <input type="text" id="mcqQuestionText1" name="mcqQuestionText1" required
-                                   class="mt-1 block w-full px-4 py-3 bg-opacity-20 bg-gray-800 border-0 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent sm:text-sm text-white">
-                        </div>
-                        <div>
-                            <label for="mcqOptionA1" class="block text-sm font-medium text-gray-400">Option A</label>
-                            <input type="text" id="mcqOptionA1" name="mcqOptionA1" required
-                                   class="mt-1 block w-full px-4 py-3 bg-opacity-20 bg-gray-800 border-0 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent sm:text-sm text-white">
-                        </div>
-                        <div>
-                            <label for="mcqOptionB1" class="block text-sm font-medium text-gray-400">Option B</label>
-                            <input type="text" id="mcqOptionB1" name="mcqOptionB1" required
-                                   class="mt-1 block w-full px-4 py-3 bg-opacity-20 bg-gray-800 border-0 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent sm:text-sm text-white">
-                        </div>
-                        <div>
-                            <label for="mcqOptionC1" class="block text-sm font-medium text-gray-400">Option C</label>
-                            <input type="text" id="mcqOptionC1" name="mcqOptionC1" required
-                                   class="mt-1 block w-full px-4 py-3 bg-opacity-20 bg-gray-800 border-0 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent sm:text-sm text-white">
-                        </div>
-                        <div>
-                            <label for="mcqOptionD1" class="block text-sm font-medium text-gray-400">Option D</label>
-                            <input type="text" id="mcqOptionD1" name="mcqOptionD1" required
-                                   class="mt-1 block w-full px-4 py-3 bg-opacity-20 bg-gray-800 border-0 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent sm:text-sm text-white">
-                        </div>
-                        <div>
-                            <label for="mcqCorrectAnswer1" class="block text-sm font-medium text-gray-400">Correct Answer (e.g., A, B, C, D)</label>
-                            <input type="text" id="mcqCorrectAnswer1" name="mcqCorrectAnswer1" required
-                                   class="mt-1 block w-full px-4 py-3 bg-opacity-20 bg-gray-800 border-0 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent sm:text-sm text-white">
-                        </div>
-                    </div>
+                    <!-- MCQ question blocks will be added dynamically -->
                 </div>
                 <button type="button" id="addMcqQuestionBtn" class="btn-secondary py-2 px-4 rounded-lg text-sm font-medium">
                     <i class="fas fa-plus mr-1"></i>Add Another MCQ Question
